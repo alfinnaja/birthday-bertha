@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Bertha ❤️</title>
+
+<style>
+:root{
+--bg1:#0f2027;--bg2:#203a43;--bg3:#2c5364;
+--card:rgba(255,255,255,.15);--text:#fff;--btn:#ff5e9c;
+}
+body.light{
+--bg1:#ff9a9e;--bg2:#fad0c4;--bg3:#fad0c4;
+--card:rgba(255,255,255,.6);--text:#000;
+}
+body{
+margin:0;min-height:100vh;font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+display:flex;justify-content:center;align-items:center;
+overflow:hidden;color:var(--text);
+}
+.card{
+background:var(--card);padding:25px;border-radius:25px;
+max-width:380px;width:90%;text-align:center;
+backdrop-filter:blur(10px);
+box-shadow:0 15px 40px rgba(0,0,0,.3);
+animation:fade 1.5s ease;
+z-index:2;
+}
+img{
+width:140px;height:140px;object-fit:cover;border-radius:50%;
+border:4px solid white;margin-bottom:10px;
+}
+p{font-size:15px;line-height:1.6}
+button{
+margin:6px;padding:10px 22px;border:none;border-radius:25px;
+background:var(--btn);color:white;font-size:14px;cursor:pointer;
+}
+button:hover{transform:scale(1.05)}
+.love{
+position:absolute;font-size:20px;animation:float 6s linear infinite;
+}
+.confetti{
+position:absolute;width:8px;height:8px;
+animation:confetti 3s linear infinite;
+}
+@keyframes float{
+from{transform:translateY(100vh);opacity:0}
+to{transform:translateY(-10vh);opacity:1}
+}
+@keyframes fade{
+from{opacity:0;transform:scale(.8)}
+to{opacity:1;transform:scale(1)}
+}
+@keyframes confetti{
+from{transform:translateY(-10vh) rotate(0deg)}
+to{transform:translateY(110vh) rotate(360deg)}
+}
+.countdown{font-size:15px;margin:8px 0}
+#typed{min-height:90px;white-space:pre-line}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<img id="photo" src="foto/bertha_1.jpg" alt="Bertha">
+
+<h2>🎉 Selamat Ulang Tahun 🎉</h2>
+<b>BERTHA INDI IRANELA ❤️</b>
+
+<div class="countdown" id="countdown"></div>
+<div id="age"></div>
+
+<p id="typed"></p>
+
+<button onclick="love()">💌 Pesan</button>
+<button onclick="toggle()">🌙 / ☀️</button>
+<button id="btnMusic">🎵 Musik</button>
+</div>
+
+<audio id="music" loop>
+  <source src="musik/lagu.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// SLIDESHOW FOTO
+const photos=["foto/bertha_1.jpg","foto/bertha_2.jpg"];
+let i=0;
+setInterval(()=>{
+  i=(i+1)%photos.length;
+  document.getElementById("photo").src=photos[i];
+},3000);
+
+// PESAN CINTA
+function love(){
+  alert("Aku mencintaimu hari ini, besok, dan selamanya ❤️");
+}
+
+// DARK MODE
+function toggle(){
+  document.body.classList.toggle("light");
+}
+
+// MUSIK MP3 MOBILE-FRIENDLY
+const audio=document.getElementById("music");
+const btnMusic=document.getElementById("btnMusic");
+btnMusic.addEventListener("click",()=>{
+  if(audio.paused){
+    audio.play().catch(()=>{}); // menangani error autoplay di browser
+    btnMusic.innerText="⏸️ Pause Musik";
+  }else{
+    audio.pause();
+    btnMusic.innerText="🎵 Musik";
+  }
+});
+
+// LOVE TERBANG
+setInterval(()=>{
+  const l=document.createElement("div");
+  l.className="love";
+  l.innerHTML="❤️";
+  l.style.left=Math.random()*100+"vw";
+  l.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(l);
+  setTimeout(()=>l.remove(),6000);
+},350);
+
+// COUNTDOWN
+const cd=document.getElementById("countdown");
+let birthday=new Date(new Date().getFullYear(),11,29);
+if(birthday<new Date()) birthday.setFullYear(birthday.getFullYear()+1);
+
+setInterval(()=>{
+  const now=new Date();
+  const diff=birthday-now;
+  if(diff<=0){
+    cd.innerHTML="🎂 SELAMAT ULANG TAHUN SAYANGKU 🎉";
+    confetti();
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  const s=Math.floor(diff/1000)%60;
+  cd.innerHTML=`⏳ ${d}h ${h}j ${m}m ${s}d`;
+},1000);
+
+// UMUR
+const birth=new Date(2004,11,29);
+const age=Math.floor((new Date()-birth)/31557600000);
+document.getElementById("age").innerHTML=`🎂 Usia: <b>${age} tahun</b>`;
+
+// CONFETTI
+function confetti(){
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.animationDuration=(2+Math.random()*2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+// TYPING TEXT
+const text=`Terima kasih sudah hadir dalam hidupku 🤍
+Semoga kamu selalu sehat, bahagia,
+dan semua impianmu tercapai.
+Aku akan selalu di sampingmu 💕
+— Muhammad AlfinNaja`;
+let idx=0;
+const typed=document.getElementById("typed");
+setInterval(()=>{
+  if(idx<text.length){
+    typed.innerHTML+=text.charAt(idx);
+    idx++;
+  }
+},45);
+</script>
+
+</body>
+</html>
