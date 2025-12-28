@@ -38,27 +38,12 @@ margin:6px;padding:10px 22px;border:none;border-radius:25px;
 background:var(--btn);color:white;font-size:14px;cursor:pointer;
 }
 button:hover{transform:scale(1.05)}
-.love{
-position:absolute;font-size:20px;animation:float 6s linear infinite;
-}
-.confetti{
-position:absolute;width:8px;height:8px;
-animation:confetti 3s linear infinite;
-}
-@keyframes float{
-from{transform:translateY(100vh);opacity:0}
-to{transform:translateY(-10vh);opacity:1}
-}
+.countdown{font-size:15px;margin:8px 0}
+#typed{min-height:90px;white-space:pre-line}
 @keyframes fade{
 from{opacity:0;transform:scale(.8)}
 to{opacity:1;transform:scale(1)}
 }
-@keyframes confetti{
-from{transform:translateY(-10vh) rotate(0deg)}
-to{transform:translateY(110vh) rotate(360deg)}
-}
-.countdown{font-size:15px;margin:8px 0}
-#typed{min-height:90px;white-space:pre-line}
 </style>
 </head>
 
@@ -80,12 +65,13 @@ to{transform:translateY(110vh) rotate(360deg)}
 <button id="btnMusic">🎵 Musik</button>
 </div>
 
-<audio id="music" loop>
+<!-- 🎵 Audio khusus HP -->
+<audio id="music" preload="auto" playsinline>
   <source src="lagu.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// SLIDESHOW FOTO
+// FOTO SLIDESHOW
 const photos=["bertha_1.jpg","bertha_2.jpg"];
 let i=0;
 setInterval(()=>{
@@ -93,23 +79,27 @@ setInterval(()=>{
   document.getElementById("photo").src=photos[i];
 },3000);
 
-// PESAN CINTA
+// PESAN
 function love(){
   alert("Aku mencintaimu hari ini, besok, dan selamanya ❤️");
 }
 
-// DARK MODE
+// MODE
 function toggle(){
   document.body.classList.toggle("light");
 }
 
-// MUSIK
+// MUSIK — FIX MOBILE
 const audio=document.getElementById("music");
 const btnMusic=document.getElementById("btnMusic");
+
 btnMusic.addEventListener("click",()=>{
   if(audio.paused){
-    audio.play().catch(()=>{});
-    btnMusic.innerText="⏸️ Pause Musik";
+    audio.play().then(()=>{
+      btnMusic.innerText="⏸️ Pause Musik";
+    }).catch(()=>{
+      alert("Tap sekali lagi untuk memutar musik 🎵");
+    });
   }else{
     audio.pause();
     btnMusic.innerText="🎵 Musik";
@@ -140,7 +130,7 @@ const birth=new Date(2004,11,29);
 const age=Math.floor((new Date()-birth)/31557600000);
 document.getElementById("age").innerHTML=`🎂 Usia: <b>${age} tahun</b>`;
 
-// TYPING TEXT
+// TYPING
 const text=`Terima kasih sudah hadir dalam hidupku 🤍
 Semoga kamu selalu sehat, bahagia,
 dan semua impianmu tercapai.
@@ -159,4 +149,3 @@ setInterval(()=>{
 
 </body>
 </html>
-
