@@ -65,7 +65,7 @@ to{transform:translateY(110vh) rotate(360deg)}
 <body>
 
 <div class="card">
-<img id="photo" src="foto/bertha_1.jpg" alt="Bertha">
+<img id="photo" src="bertha_1.jpg" alt="Bertha">
 
 <h2>🎉 Selamat Ulang Tahun 🎉</h2>
 <b>BERTHA INDI IRANELA ❤️</b>
@@ -81,12 +81,12 @@ to{transform:translateY(110vh) rotate(360deg)}
 </div>
 
 <audio id="music" loop>
-  <source src="musik/lagu.mp3" type="audio/mpeg">
+  <source src="lagu.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 // SLIDESHOW FOTO
-const photos=["foto/bertha_1.jpg","foto/bertha_2.jpg"];
+const photos=["bertha_1.jpg","bertha_2.jpg"];
 let i=0;
 setInterval(()=>{
   i=(i+1)%photos.length;
@@ -103,29 +103,18 @@ function toggle(){
   document.body.classList.toggle("light");
 }
 
-// MUSIK MP3 MOBILE-FRIENDLY
+// MUSIK
 const audio=document.getElementById("music");
 const btnMusic=document.getElementById("btnMusic");
 btnMusic.addEventListener("click",()=>{
   if(audio.paused){
-    audio.play().catch(()=>{}); // menangani error autoplay di browser
+    audio.play().catch(()=>{});
     btnMusic.innerText="⏸️ Pause Musik";
   }else{
     audio.pause();
     btnMusic.innerText="🎵 Musik";
   }
 });
-
-// LOVE TERBANG
-setInterval(()=>{
-  const l=document.createElement("div");
-  l.className="love";
-  l.innerHTML="❤️";
-  l.style.left=Math.random()*100+"vw";
-  l.style.animationDuration=(3+Math.random()*3)+"s";
-  document.body.appendChild(l);
-  setTimeout(()=>l.remove(),6000);
-},350);
 
 // COUNTDOWN
 const cd=document.getElementById("countdown");
@@ -137,7 +126,6 @@ setInterval(()=>{
   const diff=birthday-now;
   if(diff<=0){
     cd.innerHTML="🎂 SELAMAT ULANG TAHUN SAYANGKU 🎉";
-    confetti();
     return;
   }
   const d=Math.floor(diff/86400000);
@@ -152,25 +140,13 @@ const birth=new Date(2004,11,29);
 const age=Math.floor((new Date()-birth)/31557600000);
 document.getElementById("age").innerHTML=`🎂 Usia: <b>${age} tahun</b>`;
 
-// CONFETTI
-function confetti(){
-  for(let i=0;i<80;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    c.style.animationDuration=(2+Math.random()*2)+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
-}
-
 // TYPING TEXT
 const text=`Terima kasih sudah hadir dalam hidupku 🤍
 Semoga kamu selalu sehat, bahagia,
 dan semua impianmu tercapai.
 Aku akan selalu di sampingmu 💕
 — Muhammad AlfinNaja`;
+
 let idx=0;
 const typed=document.getElementById("typed");
 setInterval(()=>{
