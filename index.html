@@ -26,7 +26,6 @@ max-width:380px;width:90%;text-align:center;
 backdrop-filter:blur(10px);
 box-shadow:0 15px 40px rgba(0,0,0,.3);
 animation:fade 1.5s ease;
-z-index:2;
 }
 img{
 width:140px;height:140px;object-fit:cover;border-radius:50%;
@@ -50,7 +49,7 @@ to{opacity:1;transform:scale(1)}
 <body>
 
 <div class="card">
-<img id="photo" src="bertha_1.jpg" alt="Bertha">
+<img id="photo" src="bertha_1.jpg">
 
 <h2>🎉 Selamat Ulang Tahun 🎉</h2>
 <b>BERTHA INDI IRANELA ❤️</b>
@@ -65,13 +64,10 @@ to{opacity:1;transform:scale(1)}
 <button id="btnMusic">🎵 Musik</button>
 </div>
 
-<!-- 🎵 Audio khusus HP -->
-<audio id="music" preload="auto" playsinline>
-  <source src="lagu.mp3" type="audio/mpeg">
-</audio>
+<audio id="music" src="lagu.mp3" preload="auto" playsinline></audio>
 
 <script>
-// FOTO SLIDESHOW
+// SLIDESHOW
 const photos=["bertha_1.jpg","bertha_2.jpg"];
 let i=0;
 setInterval(()=>{
@@ -89,22 +85,30 @@ function toggle(){
   document.body.classList.toggle("light");
 }
 
-// MUSIK — FIX MOBILE
-const audio=document.getElementById("music");
-const btnMusic=document.getElementById("btnMusic");
+// 🔊 MUSIK SUPER FIX MOBILE
+const audio = document.getElementById("music");
+const btnMusic = document.getElementById("btnMusic");
 
-btnMusic.addEventListener("click",()=>{
+function startMusic(){
+  audio.muted=false;
+  audio.currentTime=0;
+  audio.play();
+  btnMusic.innerText="⏸️ Pause Musik";
+}
+
+btnMusic.onclick = ()=>{
   if(audio.paused){
-    audio.play().then(()=>{
-      btnMusic.innerText="⏸️ Pause Musik";
-    }).catch(()=>{
-      alert("Tap sekali lagi untuk memutar musik 🎵");
-    });
-  }else{
+    startMusic();
+  } else {
     audio.pause();
     btnMusic.innerText="🎵 Musik";
   }
-});
+};
+
+// Trigger wajib HP
+document.body.addEventListener("touchstart",()=>{
+  if(audio.paused) startMusic();
+},{once:true});
 
 // COUNTDOWN
 const cd=document.getElementById("countdown");
