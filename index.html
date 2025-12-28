@@ -7,19 +7,19 @@
 
 <style>
 body{
-margin:0;min-height:100vh;font-family:Segoe UI,sans-serif;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-display:flex;justify-content:center;align-items:center;color:#fff;
+  margin:0;min-height:100vh;font-family:Segoe UI,sans-serif;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;justify-content:center;align-items:center;color:#fff;
 }
 .card{
-background:rgba(255,255,255,.15);padding:25px;border-radius:25px;
-max-width:380px;width:90%;text-align:center;
-box-shadow:0 15px 40px rgba(0,0,0,.3);
+  background:rgba(255,255,255,.15);padding:25px;border-radius:25px;
+  max-width:380px;width:90%;text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
 }
 img{width:140px;height:140px;border-radius:50%;border:4px solid white}
 button{
-margin:6px;padding:10px 22px;border:none;border-radius:25px;
-background:#ff5e9c;color:white;font-size:14px
+  margin:6px;padding:10px 22px;border:none;border-radius:25px;
+  background:#ff5e9c;color:white;font-size:14px;cursor:pointer;
 }
 #typed{min-height:90px;white-space:pre-line}
 </style>
@@ -28,60 +28,54 @@ background:#ff5e9c;color:white;font-size:14px
 <body>
 
 <div class="card" id="app">
-<img id="photo" src="bertha_1.jpg">
+  <img id="photo" src="bertha_1.jpg">
 
-<h2>🎉 Selamat Ulang Tahun 🎉</h2>
-<b>BERTHA INDI IRANELA ❤️</b>
+  <h2>🎉 Selamat Ulang Tahun 🎉</h2>
+  <b>BERTHA INDI IRANELA ❤️</b>
 
-<p id="typed"></p>
+  <p id="typed"></p>
 
-<button id="btnMusic">▶️ Putar Musik</button>
+  <button id="btnMusic">▶️ Putar Musik</button>
 </div>
 
-<audio id="music" src="lagu.mp3" preload="auto"></audio>
+<!-- playsinline penting untuk HP -->
+<audio id="music" src="lagu.mp3" preload="auto" playsinline></audio>
 
 <script>
 const audio = document.getElementById("music");
 const btn = document.getElementById("btnMusic");
 
-// UNLOCK AUDIO CONTEXT — wajib HP
-function unlockAudio(){
-  audio.play().then(()=>{
-    audio.pause();
-    audio.currentTime = 0;
-  }).catch(()=>{});
-}
-
-// Trigger pertama user
-document.addEventListener("click", unlockAudio, {once:true});
-document.addEventListener("touchstart", unlockAudio, {once:true});
-
-// Tombol kontrol
-btn.onclick = ()=>{
+// tombol musik — HARUS langsung dari klik user
+btn.addEventListener("click", () => {
   if(audio.paused){
-    audio.play();
-    btn.innerText = "⏸️ Pause Musik";
+    audio.play().then(()=>{
+      btn.innerText = "⏸️ Pause Musik";
+    }).catch(err=>{
+      console.log(err);
+      alert("Kalau belum bunyi, tekan tombol sekali lagi ya 😊");
+    });
   }else{
     audio.pause();
     btn.innerText = "▶️ Putar Musik";
   }
-};
+});
 
-// Typing effect
+// efek ketik
 const text=`Terima kasih sudah hadir dalam hidupku 🤍
 Semoga kamu selalu sehat, bahagia,
 dan semua impianmu tercapai.
 Aku akan selalu di sampingmu 💕
 — Muhammad AlfinNaja`;
 
-let i=0;
-const t=document.getElementById("typed");
+let i = 0;
+const t = document.getElementById("typed");
+
 setInterval(()=>{
-  if(i<text.length){
-    t.innerHTML+=text.charAt(i);
+  if(i < text.length){
+    t.innerHTML += text.charAt(i);
     i++;
   }
-},40);
+}, 40);
 </script>
 
 </body>
