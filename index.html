@@ -6,149 +6,82 @@
 <title>Happy Birthday Bertha ❤️</title>
 
 <style>
-:root{
---bg1:#0f2027;--bg2:#203a43;--bg3:#2c5364;
---card:rgba(255,255,255,.15);--text:#fff;--btn:#ff5e9c;
-}
-body.light{
---bg1:#ff9a9e;--bg2:#fad0c4;--bg3:#fad0c4;
---card:rgba(255,255,255,.6);--text:#000;
-}
 body{
-margin:0;min-height:100vh;font-family:'Segoe UI',sans-serif;
-background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
-display:flex;justify-content:center;align-items:center;
-overflow:hidden;color:var(--text);
+margin:0;min-height:100vh;font-family:Segoe UI,sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+display:flex;justify-content:center;align-items:center;color:#fff;
 }
 .card{
-background:var(--card);padding:25px;border-radius:25px;
+background:rgba(255,255,255,.15);padding:25px;border-radius:25px;
 max-width:380px;width:90%;text-align:center;
-backdrop-filter:blur(10px);
 box-shadow:0 15px 40px rgba(0,0,0,.3);
-animation:fade 1.5s ease;
 }
-img{
-width:140px;height:140px;object-fit:cover;border-radius:50%;
-border:4px solid white;margin-bottom:10px;
-}
-p{font-size:15px;line-height:1.6}
+img{width:140px;height:140px;border-radius:50%;border:4px solid white}
 button{
 margin:6px;padding:10px 22px;border:none;border-radius:25px;
-background:var(--btn);color:white;font-size:14px;cursor:pointer;
+background:#ff5e9c;color:white;font-size:14px
 }
-button:hover{transform:scale(1.05)}
-.countdown{font-size:15px;margin:8px 0}
 #typed{min-height:90px;white-space:pre-line}
-@keyframes fade{
-from{opacity:0;transform:scale(.8)}
-to{opacity:1;transform:scale(1)}
-}
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="card" id="app">
 <img id="photo" src="bertha_1.jpg">
 
 <h2>🎉 Selamat Ulang Tahun 🎉</h2>
 <b>BERTHA INDI IRANELA ❤️</b>
 
-<div class="countdown" id="countdown"></div>
-<div id="age"></div>
-
 <p id="typed"></p>
 
-<button onclick="love()">💌 Pesan</button>
-<button onclick="toggle()">🌙 / ☀️</button>
-<button id="btnMusic">🎵 Musik</button>
+<button id="btnMusic">▶️ Putar Musik</button>
 </div>
 
-<audio id="music" src="lagu.mp3" preload="auto" playsinline></audio>
+<audio id="music" src="lagu.mp3" preload="auto"></audio>
 
 <script>
-// SLIDESHOW
-const photos=["bertha_1.jpg","bertha_2.jpg"];
-let i=0;
-setInterval(()=>{
-  i=(i+1)%photos.length;
-  document.getElementById("photo").src=photos[i];
-},3000);
-
-// PESAN
-function love(){
-  alert("Aku mencintaimu hari ini, besok, dan selamanya ❤️");
-}
-
-// MODE
-function toggle(){
-  document.body.classList.toggle("light");
-}
-
-// 🔊 MUSIK SUPER FIX MOBILE
 const audio = document.getElementById("music");
-const btnMusic = document.getElementById("btnMusic");
+const btn = document.getElementById("btnMusic");
 
-function startMusic(){
-  audio.muted=false;
-  audio.currentTime=0;
-  audio.play();
-  btnMusic.innerText="⏸️ Pause Musik";
+// UNLOCK AUDIO CONTEXT — wajib HP
+function unlockAudio(){
+  audio.play().then(()=>{
+    audio.pause();
+    audio.currentTime = 0;
+  }).catch(()=>{});
 }
 
-btnMusic.onclick = ()=>{
+// Trigger pertama user
+document.addEventListener("click", unlockAudio, {once:true});
+document.addEventListener("touchstart", unlockAudio, {once:true});
+
+// Tombol kontrol
+btn.onclick = ()=>{
   if(audio.paused){
-    startMusic();
-  } else {
+    audio.play();
+    btn.innerText = "⏸️ Pause Musik";
+  }else{
     audio.pause();
-    btnMusic.innerText="🎵 Musik";
+    btn.innerText = "▶️ Putar Musik";
   }
 };
 
-// Trigger wajib HP
-document.body.addEventListener("touchstart",()=>{
-  if(audio.paused) startMusic();
-},{once:true});
-
-// COUNTDOWN
-const cd=document.getElementById("countdown");
-let birthday=new Date(new Date().getFullYear(),11,29);
-if(birthday<new Date()) birthday.setFullYear(birthday.getFullYear()+1);
-
-setInterval(()=>{
-  const now=new Date();
-  const diff=birthday-now;
-  if(diff<=0){
-    cd.innerHTML="🎂 SELAMAT ULANG TAHUN SAYANGKU 🎉";
-    return;
-  }
-  const d=Math.floor(diff/86400000);
-  const h=Math.floor(diff/3600000)%24;
-  const m=Math.floor(diff/60000)%60;
-  const s=Math.floor(diff/1000)%60;
-  cd.innerHTML=`⏳ ${d}h ${h}j ${m}m ${s}d`;
-},1000);
-
-// UMUR
-const birth=new Date(2004,11,29);
-const age=Math.floor((new Date()-birth)/31557600000);
-document.getElementById("age").innerHTML=`🎂 Usia: <b>${age} tahun</b>`;
-
-// TYPING
+// Typing effect
 const text=`Terima kasih sudah hadir dalam hidupku 🤍
 Semoga kamu selalu sehat, bahagia,
 dan semua impianmu tercapai.
 Aku akan selalu di sampingmu 💕
 — Muhammad AlfinNaja`;
 
-let idx=0;
-const typed=document.getElementById("typed");
+let i=0;
+const t=document.getElementById("typed");
 setInterval(()=>{
-  if(idx<text.length){
-    typed.innerHTML+=text.charAt(idx);
-    idx++;
+  if(i<text.length){
+    t.innerHTML+=text.charAt(i);
+    i++;
   }
-},45);
+},40);
 </script>
 
 </body>
